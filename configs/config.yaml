@@ -1,0 +1,26 @@
+####################################
+## Do not change this file
+####################################
+
+app:
+    port: 8081
+
+db:
+    driver: mysql
+    host: db
+    port: 3306
+    database: m2ex_otp
+    username: root
+    password: root
+
+kafka:
+    host: kafka
+    port: 9092
+    topic: private-m2ex-otp-sms-send
+
+grpc:
+    host: 127.0.0.1
+    port: 50052
+
+swagger:
+    basePath: "/release/mmwallet"

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "./server";
+
+service Otp {
+    rpc ValidateOtp (ValidateOtpRequest) returns (ValidateOtpResponse) {}
+}
+
+message ValidateOtpRequest {
+    string reference_code = 1;
+	string otp = 2;
+}
+
+
+message ValidateOtpResponse {
+    bool is_validate = 1;
+}

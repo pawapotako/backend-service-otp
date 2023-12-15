@@ -1,0 +1,149 @@
+definitions:
+  m2ex-otp-service_internal_model.AccessTokenResponse:
+    description: Detailed description for Access Token response
+    properties:
+      isRegistered:
+        type: boolean
+      refreshToken:
+        type: string
+      sessionToken:
+        type: string
+    type: object
+  ? m2ex-otp-service_internal_model.DefaultPayload-m2ex-otp-service_internal_model_AccessTokenResponse
+  : properties:
+      data:
+        $ref: '#/definitions/m2ex-otp-service_internal_model.AccessTokenResponse'
+    type: object
+  m2ex-otp-service_internal_util.AppErrors:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/m2ex-otp-service_internal_util.ItemError'
+        type: array
+    type: object
+  m2ex-otp-service_internal_util.ItemError:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /health-check:
+    get:
+      consumes:
+      - application/json
+      description: Check if the API server is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Check API health
+      tags:
+      - Health Check
+  /v1/authentications/apple-id-token-verification:
+    get:
+      consumes:
+      - application/json
+      description: Validate Apple ID token and returns response.
+      parameters:
+      - description: Session Token Header
+        in: header
+        name: Session-Token
+        required: true
+        type: string
+      - description: Apple ID Token
+        in: query
+        name: idToken
+        required: true
+        type: string
+      - description: Is Android
+        in: query
+        name: isAndroid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_model.DefaultPayload-m2ex-otp-service_internal_model_AccessTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_util.AppErrors'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_util.AppErrors'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_util.AppErrors'
+      summary: Validate Apple ID token
+      tags:
+      - Authentication
+  /v1/authentications/apple-sign-in/callback:
+    post:
+      consumes:
+      - application/json
+      description: Redirect to Apple SignIn Webpage.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Done
+          schema:
+            type: string
+      summary: Apple SignIn
+      tags:
+      - Authentication
+  /v1/authentications/google-id-token-verification:
+    get:
+      consumes:
+      - application/json
+      description: Validate Google ID token and returns response.
+      parameters:
+      - description: Session Token Header
+        in: header
+        name: Session-Token
+        required: true
+        type: string
+      - description: Google ID Token
+        in: query
+        name: idToken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_model.DefaultPayload-m2ex-otp-service_internal_model_AccessTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_util.AppErrors'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_util.AppErrors'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/m2ex-otp-service_internal_util.AppErrors'
+      summary: Validate Google ID token
+      tags:
+      - Authentication
+swagger: "2.0"
