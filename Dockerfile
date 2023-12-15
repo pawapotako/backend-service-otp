@@ -16,7 +16,7 @@ FROM golang:alpine AS builder
 # CMD ["go","run","/app/cmd/api/main.go"]
 
 WORKDIR /build
-COPY ./backend-service-otp .
+COPY . .
 RUN go mod download
 RUN apk update && apk add bash && apk --no-cache add tzdata
 ENV TZ=Asia/Bangkok
